@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> Eco Project</title>
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --primary-light: #4caf50;
+      --accent: #a5d6a7;
+      --dark: #1b5e20;
+      --bg: #f6fff8;
+      --text: #1f2933;
+      --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      --radius: 18px;
+      --transition-fast: 0.15s ease;
+      --transition-med: 0.25s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f6fff8, #e8f5e9);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      background: rgba(246, 255, 248, 0.86);
+      border-bottom: 1px solid rgba(165, 214, 167, 0.5);
+      transition: all var(--transition-med);
+    }
+
+    .navbar.scrolled {
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .navbar-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.6rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 20%, #c8e6c9, #2e7d32);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.3rem;
+      font-size: 0.95rem;
+    }
+
+    .nav-links a.active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .lang-switch {
+      display: flex;
+      border: 1px solid var(--accent);
+      border-radius: 20px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .lang-btn {
+      padding: 0.2rem 0.6rem;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 0.75rem;
+    }
+
+    .lang-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Mobil Menyu Tugmasi (Hamburger) */
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--dark);
+    }
+
+    /* Layout */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.2rem;
+    }
+
+    section { padding: 4rem 0; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, #2e7d32, #66bb6a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 3rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(46, 125, 50, 0.3);
+    }
+
+    /* Cards */
+    .goals-grid, .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: 0.3s;
+    }
+
+    .card:hover { transform: translateY(-5px); }
+
+    .stat-card { text-align: center; background: white; padding: 1.5rem; border-radius: var(--radius); }
+    .stat-number { font-size: 2rem; font-weight: 800; color: var(--primary); }
+
+    /* Forms & Contact Wrapper */
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    form input, form select, form textarea {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      outline: none;
+    }
+
+    /* --- YANGI CONTACT BUTTONLARI STYLES --- */
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .contact-btn {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--accent);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-btn:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary);
+      box-shadow: 0 8px 20px rgba(46, 125, 50, 0.15);
+    }
+
+    .contact-btn:active {
+      transform: scale(0.98);
+    }
+
+    .icon-box {
+      width: 50px;
+      height: 50px;
+      background: #e8f5e9;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .info-box {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-label {
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .info-value {
+      font-weight: 700;
+      color: var(--dark);
+      font-size: 1.1rem;
+    }
+
+    /* Telegram ranglari */
+    .tg-admin .icon-box { background: #e3f2fd; color: #1976d2; }
+    .tg-channel .icon-box { background: #fff3e0; color: #f57c00; }
+
+    /* --- MOBIL VERSIYA UCHUN QO'SHIMCHA --- */
+    @media (max-width: 768px) {
+      .hero, .contact-wrapper { grid-template-columns: 1fr; }
+      
+      .hamburger { display: block; }
+      
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(246, 255, 248, 0.98);
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem;
+        gap: 2rem;
+        border-bottom: 1px solid var(--accent);
+        clip-path: circle(0% at 100% 0);
+        transition: 0.5s ease-in-out;
+      }
+      
+      .nav-links.mobile-active {
+        clip-path: circle(150% at 100% 0);
+      }
+    }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s all ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar-inner">
+      <div class="logo">
+        <div class="logo-icon">E</div>
+        <span data-i18n="brandName">Ahror Eco Project</span>
+      </div>
+      
+      <div class="hamburger">☰</div>
+
+      <nav class="nav-links">
+        <a href="#about" data-i18n="nav.about">Loyiha</a>
+        <a href="#goals" data-i18n="nav.goals">Maqsadlar</a>
+        <a href="#stats" data-i18n="nav.stats">Natijalar</a>
+        <a href="#contact" data-i18n="nav.contact">Bog‘lanish</a>
+        <div class="lang-switch">
+          <button class="lang-btn active" data-lang="uz">UZ</button>
+          <button class="lang-btn" data-lang="ru">RU</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="about" class="hero reveal">
+      <div>
+        <h1 class="hero-title">
+          <span data-i18n="brandName"> Eco Project</span><br>
+          <small style="font-size: 1.5rem; color: var(--text)" data-i18n="hero.titleRest">— shahrimizni yanada yashil qilamiz</small>
+        </h1>
+        <p style="margin: 1.5rem 0" data-i18n="hero.text">Maktab va mahallalarda daraxt ekish, chiqindilarni saralash va ekologik madaniyatni yuksaltirish loyihasi.</p>
+        <button class="btn-primary" onclick="location.href='#contact'" data-i18n="nav.cta">Ishtirok etish</button>
+      </div>
+      <div class="card" style="background: var(--accent)">
+        <h3 data-i18n="hero.cardTitle">Jonli statistika</h3>
+        <p data-i18n="hero.cardSubtitle">Bizning hozirgi ko'rsatkichlarimiz</p>
+      </div>
+    </section>
+
+    <section id="goals" class="reveal">
+      <h2 style="text-align: center" data-i18n="goals.title">Loyiha maqsadlari</h2>
+      <div class="goals-grid">
+        <div class="card">
+          <h3 data-i18n="goals.c1.title">Ozelenilish</h3>
+          <p data-i18n="goals.c1.text">Har bir maktab hovlisini bog'ga aylantirish.</p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="goals.c2.title">Recycle</h3>
+          <p data-i18n="goals.c2.text">Chiqindilarni saralashni o'rgatish.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="stats" class="reveal">
+      <h2 style="text-align: center" data-i18n="stats.title">Natijalarimiz</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number" data-target="1200">0</div>
+          <div data-i18n="stats.s1">Ekilgan daraxtlar</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" data-target="500">0</div>
+          <div data-i18n="stats.s3">Ko'ngillilar</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" data-target="24">0</div>
+          <div data-i18n="stats.s2">Tonna chiqindi</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="reveal">
+      <div class="contact-wrapper">
+        <div class="card">
+          <h2 data-i18n="contact.formTitle">Ro'yxatdan o'tish</h2>
+          <form id="ecoForm">
+            <input type="text" placeholder="Ismingiz" required>
+            <input type="tel" placeholder="Telefon raqamingiz" required>
+            <select>
+              <option data-i18n="contact.interestTrees">Daraxt ekish</option>
+              <option data-i18n="contact.interestCleanups">Tozalash aksiyasi</option>
+            </select>
+            <button type="submit" class="btn-primary" style="width: 100%" data-i18n="contact.submit">Yuborish</button>
+          </form>
+        </div>
+
+        <div>
+          <h2 data-i18n="nav.contact" style="margin-bottom: 1.5rem">Bog'lanish</h2>
+          
+          <div class="contact-list">
+            
+            <a href="tel:+998901234567" class="contact-btn">
+              <div class="icon-box">📞</div>
+              <div class="info-box">
+                <span class="info-label">Qo'ng'iroq markazi</span>
+                <span class="info-value">+998 94 070 09 19</span>
+              </div>
+            </a>
+
+            <a href="https://t.me/SizningAdminUseringiz" target="_blank" class="contact-btn tg-admin">
+              <div class="icon-box">👤</div>
+              <div class="info-box">
+                <span class="info-label">Loyihachi (Admin)</span>
+                <span class="info-value">@eco_admln</span>
+              </div>
+            </a>
+
+            <a href="https://t.me/SizningKanalUseringiz" target="_blank" class="contact-btn tg-channel">
+              <div class="icon-box">📢</div>
+              <div class="info-box">
+                <span class="info-label">Rasmiy kanalimiz</span>
+                <span class="info-value"> t.me/ecofamiliy</span>
+              </div>
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="text-align: center; padding: 2rem; background: var(--dark); color: white;">
+    <p data-i18n="footer.text">© 2026 Eco Project. Barcha huquqlar himoyalangan.</p>
+  </footer>
+
+  <script>
+    // 1. TIL TIZIMI
+    const translations = {
+      uz: {
+        brandName: " Eco Project",
+        "nav.about": "Loyiha", "nav.goals": "Maqsadlar", "nav.stats": "Natijalar", "nav.contact": "Bog'lanish", "nav.cta": "Ishtirok etish",
+        "hero.titleRest": " — shahrimizni yashil qilamiz", "hero.text": "Ekologik madaniyatni yuksaltirish loyihasi.",
+        "goals.title": "Loyiha maqsadlari", "goals.c1.title": "Ozelenilish", "goals.c1.text": "Maktablarni bog'ga aylantirish.",
+        "stats.title": "Natijalar", "stats.s1": "Ekilgan daraxtlar", "stats.s2": "Tonna chiqindi", "stats.s3": "Ko'ngillilar",
+        "contact.formTitle": "Ro'yxatdan o'tish", "contact.submit": "Yuborish", "contact.interestTrees": "Daraxt ekish", "contact.interestCleanups": "Tozalash aksiyasi", "footer.text": "© 2025 Ahror Eco Project."
+      },
+      ru: {
+        brandName: " Eco Project",
+        "nav.about": "Проект", "nav.goals": "Цели", "nav.stats": "Результаты", "nav.contact": "Контакты", "nav.cta": "Участвовать",
+        "hero.titleRest": " — сделаем город зеленее", "hero.text": "Проект по повышению экологической культуры.",
+        "goals.title": "Цели проекта", "goals.c1.title": "Озеленение", "goals.c1.text": "Превратим школы в сады.",
+        "stats.title": "Результаты", "stats.s1": "Деревьев посажено", "stats.s2": "Тонн мусора", "stats.s3": "Волонтеры",
+        "contact.formTitle": "Регистрация", "contact.submit": "Отправить", "contact.interestTrees": "Посадка деревьев", "contact.interestCleanups": "Субботник", "footer.text": "© 2025 Ahror Eco Project."
+      },
+      en: {
+        brandName: " Eco Project",
+        "nav.about": "Project", "nav.goals": "Goals", "nav.stats": "Results", "nav.contact": "Contact", "nav.cta": "Join",
+        "hero.titleRest": " — making city greener", "hero.text": "Project to improve eco-culture.",
+        "goals.title": "Project Goals", "goals.c1.title": "Greening", "goals.c1.text": "Turning schools into gardens.",
+        "stats.title": "Our Results", "stats.s1": "Trees planted", "stats.s2": "Tons of waste", "stats.s3": "Volunteers",
+        "contact.formTitle": "Registration", "contact.submit": "Submit", "contact.interestTrees": "Tree planting", "contact.interestCleanups": "Cleanup drive", "footer.text": "© 2025 Ahror Eco Project."
+      }
+    };
+
+    function changeLang(lang) {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        if(translations[lang][el.dataset.i18n]) {
+          el.textContent = translations[lang][el.dataset.i18n];
+        }
+      });
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+    }
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => changeLang(btn.dataset.lang));
+    });
+
+    // 2. MOBIL MENU
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('mobile-active');
+      hamburger.textContent = navLinks.classList.contains('mobile-active') ? "✕" : "☰";
+    });
+
+    // 3. RAQAMLAR ANIMATSIYASI
+    const animateStats = () => {
+      document.querySelectorAll('.stat-number').forEach(num => {
+        const target = +num.dataset.target;
+        let count = 0;
+        const inc = target / 50;
+        const update = () => {
+          if(count < target) {
+            count += inc;
+            num.innerText = Math.ceil(count) + (target === 24 ? " t" : "+");
+            setTimeout(update, 30);
+          } else { num.innerText = target + (target === 24 ? " t" : "+"); }
+        };
+        update();
+      });
+    };
+
+    // 4. SKROLL KUZATISH
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          if(entry.target.id === 'stats') animateStats();
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.reveal').forEach(section => observer.observe(section));
+
+    // 5. FORMA
+    document.getElementById('ecoForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert("Xabaringiz yuborildi! Tez orada bog'lanamiz.");
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>
